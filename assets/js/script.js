@@ -10,6 +10,11 @@ $('#searchButton').click(function () {
     PopulateSearchHistory();
 });
 
+$('#clearButton').click(function () {
+    localStorage.removeItem("history");
+    PopulateSearchHistory();
+});
+
 function GetWeatherData(city) {
     return ["Tucson", "80.00F", "25mph", "50", ".5"];
 }
@@ -35,17 +40,17 @@ function GetSearchHistory() {
 }
 function PopulateSearchHistory() {
     var history = [].concat(GetSearchHistory());
+    $('.searchButtons').remove();
     if (history[0] === null) {
         return;
     }
     var searchMenu = $('#searchMenu');
-    $('.searchButton').remove();
     for (var i = history.length-1; i >= 0; i--) {
         var button = $('<button>');
         button.addClass("btn");
         button.addClass("btn-secondary");
         button.addClass("btn-block");
-        button.addClass("searchButton");
+        button.addClass("searchButtons");
         button.text(history[i]);
         searchMenu.append(button);
     }
