@@ -1,3 +1,4 @@
+const apiKey = "cf6388d2e2e3813bde3bc6a281df93aa"; 
 PopulateSearchHistory();//on page load
 
 
@@ -28,13 +29,35 @@ $('#searchMenu').on('click', '.historyButton', function() {
 
 //This function uses OpenWeather One Call API to get the weather data for a given city
 function GetWeatherData(city) {
-    var data = ["Tucson", "80.00F", "25mph", "50", ".5"];
-    SetWeatherData(data);
+    var currentURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial";
+    var dailyURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey + "&units=imperial";
+    var currentWeather;
+    var dailyWeather;
+    fetch(currentURL).then(function (response) {
+        if (response.status === 404) {
+            alert("City not found!");
+            return;
+        }
+        return response.json();
+    }).then(function (data) {
+        console.log(data);
+        currentWeather = data;
+    });
+    fetch(dailyURL).then(function (response) {
+        if (response.status === 404) {
+            return;
+        }
+        return response.json();
+    }).then(function (data) {
+        console.log(data);
+        dailyWeather = data;
+    });
+    SetWeatherData(currentWeather, dailyWeather);
 }
 
 //This function populates a cities weather data on the page
-function SetWeatherData(weatherData) {
-
+function SetWeatherData(currentWeather, dailyWeather) {
+    
 }
 //This function adds a new item to the search history
 function AddSearchHistory(city) {
