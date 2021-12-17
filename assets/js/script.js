@@ -1,38 +1,42 @@
+PopulateSearchHistory();//on page load
 
 
-PopulateSearchHistory();
-
+//This function listens for the search button
 $('#searchButton').click(function () {
-    var weatherData = GetWeatherData($('#searchBox').val());
-    SetWeatherData(weatherData);
-    //console.log(weatherData + " **\n" + $('#searchBox').val());
+    GetWeatherData($('#searchBox').val());
     AddSearchHistory($('#searchBox').val());
     PopulateSearchHistory();
 });
 
+//This function clears local storage
 $('#clearButton').click(function () {
     localStorage.removeItem("history");
     PopulateSearchHistory();
 });
 
+//This allows the enter key to be used as well as clicking the search button
 $(document).keypress(function(event) {
     if (event.which == 13) {
         $('#searchButton').click();
     }
 })
 
-$('#searchMenu').on('click', '.searchButtons', function() {
+//Search history button click event listener
+$('#searchMenu').on('click', '.historyButton', function() {
     GetWeatherData($('#' + this.id).text());
 })
 
+//This function uses OpenWeather One Call API to get the weather data for a given city
 function GetWeatherData(city) {
-    return ["Tucson", "80.00F", "25mph", "50", ".5"];
+    var data = ["Tucson", "80.00F", "25mph", "50", ".5"];
+    SetWeatherData(data);
 }
 
+//This function populates a cities weather data on the page
 function SetWeatherData(weatherData) {
 
 }
-
+//This function adds a new item to the search history
 function AddSearchHistory(city) {
     var history = GetSearchHistory();
     if (history === null) {
@@ -45,13 +49,15 @@ function AddSearchHistory(city) {
     }
 }
 
+//This function gets the search history from local storage
 function GetSearchHistory() {
     return JSON.parse(localStorage.getItem("history"));
 }
 
+//This function populates the search history
 function PopulateSearchHistory() {
     var history = [].concat(GetSearchHistory());
-    $('.searchButtons').remove();
+    $('.historyButton').remove();
     if (history[0] === null) {
         return;
     }
@@ -61,7 +67,7 @@ function PopulateSearchHistory() {
         button.addClass("btn");
         button.addClass("btn-secondary");
         button.addClass("btn-block");
-        button.addClass("searchButtons");
+        button.addClass("historyButton");
         button.attr("id", "button" + i);
         button.text(history[i]);
         searchMenu.append(button);
