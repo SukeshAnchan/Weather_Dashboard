@@ -15,6 +15,12 @@ $('#clearButton').click(function () {
     PopulateSearchHistory();
 });
 
+$(document).keypress(function(event) {
+    if (event.which == 13) {
+        $('#searchButton').click();
+    }
+})
+
 function GetWeatherData(city) {
     return ["Tucson", "80.00F", "25mph", "50", ".5"];
 }
