@@ -21,6 +21,10 @@ $(document).keypress(function(event) {
     }
 })
 
+$('#searchMenu').on('click', '.searchButtons', function() {
+    GetWeatherData($('#' + this.id).text());
+})
+
 function GetWeatherData(city) {
     return ["Tucson", "80.00F", "25mph", "50", ".5"];
 }
@@ -44,6 +48,7 @@ function AddSearchHistory(city) {
 function GetSearchHistory() {
     return JSON.parse(localStorage.getItem("history"));
 }
+
 function PopulateSearchHistory() {
     var history = [].concat(GetSearchHistory());
     $('.searchButtons').remove();
@@ -57,6 +62,7 @@ function PopulateSearchHistory() {
         button.addClass("btn-secondary");
         button.addClass("btn-block");
         button.addClass("searchButtons");
+        button.attr("id", "button" + i);
         button.text(history[i]);
         searchMenu.append(button);
     }
