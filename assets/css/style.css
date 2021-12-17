@@ -5,3 +5,12 @@
 .header span {
     font-size: 50px;
 }
+#searchMenu hr {
+    background-color: gray;
+    height: 2px;
+}
+
+#weatherBox {
+    height: 300px;
+    border: solid 2px black;
+}
