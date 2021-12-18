@@ -6,20 +6,14 @@ const day2 = $('#day2');
 const day3 = $('#day3');
 const day4 = $('#day4');
 const day5 = $('#day5');
+var uvSpan = $('<span>');//had to put these outside the AddCurrentWeather function for asynchronous issues
+uvSpan.attr("id", "uvSpan");//had to put these outside the AddCurrentWeather function for asynchronous issues
 
-var uvSpan = $('<span>');
-uvSpan.attr("id", "uvSpan");
 const weatherTypes = ["Thunderstorm", "Drizzle", "Rain", "Snow", "Clear", "Clouds"]; //will be used to determine which image to show
 const imageLinks = ["./assets/images/thunder.svg", "./assets/images/rainy-7.svg", "./assets/images/rainy-7.svg",
-    "./assets/images/snowy-5.svg", "./assets/images/day.svg", "./assets/images/cloudy-day-1.svg"];
-
-
-
-
-
+    "./assets/images/snowy-5.svg", "./assets/images/day.svg", "./assets/images/cloudy-day-1.svg"]; //array of weather image urls
 
 PopulateSearchHistory();//on page load
-
 
 //This function listens for the search button
 $('#searchButton').click(function () {
@@ -49,7 +43,7 @@ $('#searchMenu').on('click', '.historyButton', function () {
 //This function uses OpenWeather One Call API to get the weather data for a given city
 function GetWeatherData(city) {
     var currentURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial";
-    var dailyURL = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "&appid=" + apiKey + "&units=imperial";
+    var dailyURL = "http://api.openweathermap.org/data/2.5/forecast/daily?q=" + city + "cnt=5&appid=" + apiKey + "&units=imperial";
     fetch(currentURL).then(function (response) {
         if (response.status === 404) {
             alert("City not found!");
@@ -58,13 +52,6 @@ function GetWeatherData(city) {
         return response.json();
     }).then(function (data) {
         AddCurrentWeather(data);
-    });
-    fetch(dailyURL).then(function (response) {
-        if (response.status === 404) {
-            return;
-        }
-        return response.json();
-    }).then(function (data) {
         AddFutureWeather(data);
     });
 }
@@ -108,7 +95,7 @@ function AddCurrentWeather(data) {
 
     var time = new Date(data.dt * 1000);
     h1.text(data.name + " (" + time.toLocaleString() + ")");
-    img.attr("src", GetImageSrc(data.weather[0].main, data.dt));
+    img.attr("src", GetImageSrc(data.weather[0].main));
     h31.text("Temperature: " + data.main.temp);
     h32.text("Wind: " + data.wind.speed);
     h33.text("Humidity: " + data.main.humidity);
@@ -136,10 +123,51 @@ function AddCurrentWeather(data) {
 }
 
 function AddFutureWeather(data) {
-   
+    var lat = data.coord.lat;
+    var lon = data.coord.lon;
+    var requestURL = "http://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon +
+     "&exclude=current,minutely,hourly,alert&appid=" + apiKey + "&units=imperial";
+    fetch(requestURL).then(function (response) {
+        if (response.status === 404) {
+            alert("City not found!");
+            return;
+        }
+        return response.json();
+    }).then(function (data) {
+        console.log(data);
+        for (var i = 1; i < 6; i++) {
+            $('#day' + i).text("");
+            var row1 = $('<div>');
+            var row2 = $('<div>');
+            var img = $('<img>');
+            var row3 = $('<div>');
+            var row4 = $('<div>');
+            var row5 = $('<div>');
+
+            row1.addClass("row fiveDay m-2");
+            row2.addClass("row fiveDay m-2");
+            row3.addClass("row fiveDay m-2");
+            row4.addClass("row fiveDay m-2");
+            row5.addClass("row fiveDay m-2");
+
+            var time = new Date(data.daily[i].dt * 1000);
+            row1.text(time.toLocaleString());
+            img.attr("src", GetImageSrc(data.daily[i].weather[0].main));
+            row3.text("Temp: " + data.daily[i].temp.day + "\xB0" + "F");
+            row4.text("Wind: " + data.daily[i].wind_speed + " MPG");
+            row5.text("Humidity " + data.daily[i].humidity + "%");
+
+            $('#day' + i).append(row1);
+            row2.append(img);
+            $('#day' + i).append(row2);
+            $('#day' + i).append(row3);
+            $('#day' + i).append(row4);
+            $('#day' + i).append(row5);
+        }
+    });
 }
 
-function GetImageSrc(weather, time) {
+function GetImageSrc(weather) {
     for (var i = 0; i < weatherTypes.length; i++) {
         if (weatherTypes[i] === weather) {
             return imageLinks[i];
@@ -168,15 +196,15 @@ function GetUVI(data) {
         }
         else if (uvi < 7.01) {
             $('#uvSpan').css("background-color", "orange");
-            
+
         }
         else if (uvi < 10.01) {
             $('#uvSpan').css("background-color", "red");
-            
+
         }
         else {
             $('#uvSpan').css("background-color", "purple");
-            
+
         }
     });
 }
