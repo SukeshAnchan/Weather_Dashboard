@@ -43,7 +43,6 @@ $('#searchMenu').on('click', '.historyButton', function () {
 //This function uses OpenWeather One Call API to get the weather data for a given city
 function GetWeatherData(city) {
     var currentURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial";
-    var dailyURL = "http://api.openweathermap.org/data/2.5/forecast/daily?q=" + city + "cnt=5&appid=" + apiKey + "&units=imperial";
     fetch(currentURL).then(function (response) {
         if (response.status === 404) {
             alert("City not found!");
@@ -56,6 +55,7 @@ function GetWeatherData(city) {
     });
 }
 
+//This function adds the current weather to the weatherbox div
 function AddCurrentWeather(data) {
     weatherBox.html("");
     var div1 = $('<div>');
@@ -76,16 +76,11 @@ function AddCurrentWeather(data) {
     var h33 = $('<h3>');
     var h34 = $('<h3>');
 
-    div1.addClass("row");
-    div2.addClass("row");
-    div3.addClass("row");
-    div4.addClass("row");
-    div5.addClass("row");
-    div1.addClass("my-2");
-    div2.addClass("my-2");
-    div3.addClass("my-2");
-    div4.addClass("my-2");
-    div5.addClass("my-2");
+    div1.addClass("row my-2");
+    div2.addClass("row my-2");
+    div3.addClass("row my-2");
+    div4.addClass("row my-2");
+    div5.addClass("row my-2");
     col1.addClass("col");
     col2.addClass("col");
     col3.addClass("col");
@@ -122,6 +117,7 @@ function AddCurrentWeather(data) {
     weatherBox.append(div5);
 }
 
+//This function fills the data for the 5 day forecast
 function AddFutureWeather(data) {
     var lat = data.coord.lat;
     var lon = data.coord.lon;
@@ -167,14 +163,19 @@ function AddFutureWeather(data) {
     });
 }
 
+//This function returns the url of an image depending on the weather type given
 function GetImageSrc(weather) {
     for (var i = 0; i < weatherTypes.length; i++) {
         if (weatherTypes[i] === weather) {
             return imageLinks[i];
         }
     }
+    //in case a weird weather type is given (tornado, hail) use cloudy as default
+    //could maybe add support for abnormal weather later
+    return imageLinks[5];
 }
 
+//This function gets the UV index for a given city
 function GetUVI(data) {
     var lat = data.coord.lat;
     var lon = data.coord.lon;
@@ -208,6 +209,7 @@ function GetUVI(data) {
         }
     });
 }
+
 //This function adds a new item to the search history
 function AddSearchHistory(city) {
     var history = GetSearchHistory();
@@ -245,6 +247,3 @@ function PopulateSearchHistory() {
         searchMenu.append(button);
     }
 }
-
-
-
