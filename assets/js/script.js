@@ -45,7 +45,13 @@ function GetWeatherData(city) {
     var currentURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial";
     fetch(currentURL).then(function (response) {
         if (response.status === 404) {
-            alert("City not found!");
+            alert("City '" + city + "' not found! Please try a different city");
+            weatherBox.text("");
+            day1.text("");
+            day2.text("");
+            day3.text("");
+            day4.text("");
+            day5.text("");
             return;
         }
         return response.json();
