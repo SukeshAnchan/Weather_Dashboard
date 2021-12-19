@@ -91,9 +91,9 @@ function AddCurrentWeather(data) {
     var time = new Date(data.dt * 1000);
     h1.text(data.name + " (" + time.toLocaleString() + ")");
     img.attr("src", GetImageSrc(data.weather[0].main));
-    h31.text("Temperature: " + data.main.temp);
-    h32.text("Wind: " + data.wind.speed);
-    h33.text("Humidity: " + data.main.humidity);
+    h31.text("Temperature: " + data.main.temp + "\xB0" + "F");
+    h32.text("Wind: " + data.wind.speed + " MPH");
+    h33.text("Humidity: " + data.main.humidity + "%");
     h34.text("UV Index: ");
     var UVI = GetUVI(data);
 
@@ -147,7 +147,8 @@ function AddFutureWeather(data) {
             row5.addClass("row fiveDay m-2");
 
             var time = new Date(data.daily[i].dt * 1000);
-            row1.text(time.toLocaleString());
+            var date = time.toLocaleString().split(",");
+            row1.text(date[0]);
             img.attr("src", GetImageSrc(data.daily[i].weather[0].main));
             row3.text("Temp: " + data.daily[i].temp.day + "\xB0" + "F");
             row4.text("Wind: " + data.daily[i].wind_speed + " MPG");
