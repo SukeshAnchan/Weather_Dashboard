@@ -42,7 +42,7 @@ $('#searchMenu').on('click', '.historyButton', function () {
 
 //This function uses OpenWeather One Call API to get the weather data for a given city
 function GetWeatherData(city) {
-    var currentURL = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial";
+    var currentURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial";
     fetch(currentURL).then(function (response) {
         if (response.status === 404) {
             alert("City not found!");
@@ -121,7 +121,7 @@ function AddCurrentWeather(data) {
 function AddFutureWeather(data) {
     var lat = data.coord.lat;
     var lon = data.coord.lon;
-    var requestURL = "http://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon +
+    var requestURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon +
      "&exclude=current,minutely,hourly,alert&appid=" + apiKey + "&units=imperial";
     fetch(requestURL).then(function (response) {
         if (response.status === 404) {
@@ -180,7 +180,7 @@ function GetImageSrc(weather) {
 function GetUVI(data) {
     var lat = data.coord.lat;
     var lon = data.coord.lon;
-    var requestURL = "http://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
+    var requestURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=" + apiKey;
     fetch(requestURL).then(function (response) {
         if (response.status === 404) {
             alert("UV index not found!");
