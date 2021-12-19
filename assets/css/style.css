@@ -11,7 +11,7 @@
 }
 
 #weatherBox {
-    height: 300px;
+    height: 360px;
     border: solid 2px black;
 }
 #fiveDay {
@@ -20,4 +20,34 @@
 .fiveDay {
     color: white;
     font-size: 20px;
+}
+
+@media screen and (max-width: 1367px) {
+    #weatherBox h1 {
+        font-size: 38px;
+    }
+    #weatherBox h3 {
+        font-size: 26px;
+    }
+    #searchMenu h1 {
+        font-size: 38px;
+    }
+}
+
+@media screen and (max-width: 866px) {
+    #weatherBox h1 {
+        font-size: 34px;
+    }
+    #weatherBox h3 {
+        font-size: 22px;
+    }
+    #searchMenu button {
+        font-size: 13px;
+    }
+    #searchMenu h1 {
+        font-size: 34px;
+    }
+    .historyButton {
+        font-size: 12px;
+    }
 }
