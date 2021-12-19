@@ -4,8 +4,8 @@ David Schepis
 
 06 Server-Side APIs: Weather Dashboard
 
-This webpage allows a user to search for a specific city and view the weather forecast for the current day and future. 
-The search history is shown on the page which allows a user to revisit a cities weather forecast.
+This webpage allows a user to search for a specific city and view the weather forecast for the current, and
+five day future. The users search history is saved into localstorage.
 
 Links
 
