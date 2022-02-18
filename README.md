@@ -46,5 +46,5 @@ There are no tests for this application
 ```
 
  ## Questions
-Please contact me at [davidschepis@gmail.com](mailto:davidschepis@gmail.com) with any questions.
+Please contact me at [davids.developer@outlook.com](davids.developer@outlook.com) with any questions.
 Github Repo: [davidschepis](https://github.com/davidschepis).
